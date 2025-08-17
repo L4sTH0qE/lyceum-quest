@@ -1,0 +1,118 @@
+.taskContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 16px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.frameParent {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.frameWrapper {
+  flex-basis: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+.frameWrapper::after,
+.fieldGroup::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #87a0af;
+}
+
+.frameWrapper::after {
+  right: -0.75rem;
+}
+
+.label {
+  color: var(--color-txt-ic-light, #b1b1b1);
+
+  font-family: var(--font-family-title, "Styrene B LC");
+  font-size: var(--font-size-sm, 0.75rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--lineheight-headings-02, 1.25rem);
+  letter-spacing: var(--letterspacing-headings, 0rem);
+}
+
+.staticText {
+  color: var(--color-text-icons-color-txt-ic-secondary, #262628);
+  font-feature-settings: "case" on;
+
+  font-family: var(--font-family-title, "Styrene B LC");
+  font-size: var(--font-size-md, 0.875rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: var(--lineheight-text, 1rem);
+  letter-spacing: var(--letterspacing-text, -0.025rem);
+}
+
+.fieldGroup {
+  flex-basis: 70%; /* Занимает 6/10 от ширины */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+.fieldGroup::after {
+  right: -0.75rem; /* Сепаратор между "Текст" и "Следующий шаг" */
+}
+
+.frameDiv {
+  flex-basis: 20%; /* Занимает 2/10 от ширины */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+.input {
+  font-size: 0.875rem;
+  color: #1d1d1d;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  width: 100%;
+}
+
+.verticalText {
+  position: absolute;
+  top: 50%;
+  left: -1rem;
+  color: #828282;
+  text-align: center;
+  transform: rotate(-90deg) translateX(-40%);
+  transform-origin: left center;
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}

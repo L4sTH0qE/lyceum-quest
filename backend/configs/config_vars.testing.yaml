@@ -1,0 +1,11 @@
+worker-threads: 4
+worker-fs-threads: 1
+monitor_worker_threads: 1
+logger-level: debug
+
+is-testing: true
+
+server-port: 8080
+
+# lyceum_quest_db_1 is the service name + _ + filename of the db_1.sql
+dbconnection: 'postgresql://testsuite@localhost:15433/lyceum_quest_db_1'

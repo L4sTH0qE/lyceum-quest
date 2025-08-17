@@ -1,0 +1,33 @@
+stages:
+  - trigger_create_release
+  - trigger_deploy_to_prod
+
+variables:
+  RELEASE_VERSION: "v"
+  BUILD_TARGET: "all"
+  
+trigger_create_release:
+  stage: trigger_create_release
+  trigger:
+    include:
+      - local: 'ci/create_release.yml'
+    strategy: depend
+  rules:
+    - if: '$PIPELINE_ACTION == "create_release"'
+    - if: '$PIPELINE_ACTION == "create_release_and_deploy"'
+  variables:
+    RELEASE_VERSION: $RELEASE_VERSION
+    BUILD_TARGET: $BUILD_TARGET
+
+trigger_deploy_to_prod:
+  stage: trigger_deploy_to_prod
+  trigger:
+    include:
+      - local: 'ci/deploy_to_prod.yml'
+    strategy: depend
+  rules:
+    - if: '$PIPELINE_ACTION == "deploy_to_prod" && $RELEASE_VERSION'
+    - if: '$PIPELINE_ACTION == "create_release_and_deploy"'
+  variables:
+    RELEASE_VERSION: $RELEASE_VERSION
+    DEPLOY_TARGET: $BUILD_TARGET

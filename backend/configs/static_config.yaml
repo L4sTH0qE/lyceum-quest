@@ -1,0 +1,209 @@
+components_manager:
+  task_processors: # Task processor is an executor for coroutine tasks
+    main-task-processor: # Make a task processor for CPU-bound couroutine tasks.
+      worker_threads: $worker-threads # Process tasks in 4 threads.
+
+    fs-task-processor: # Make a separate task processor for filesystem bound tasks.
+      worker_threads: $worker-fs-threads
+    
+    monitor-task-processor:  # for monitoring
+      thread_name: mon-worker
+      worker_threads: $monitor_worker_threads
+      worker_threads#fallback: 1
+
+  default_task_processor: main-task-processor
+
+  components: # Configuring components that were registered via component_list
+    server:
+      listener: # configuring the main listening socket...
+        port: $server-port # ...to listen on this port and...
+        task_processor: main-task-processor # ...process incoming requests on this task processor.
+      listener-monitor:
+        port: 8093
+        task_processor: monitor-task-processor
+
+    cors-middleware: {}
+    json-middleware: {}
+
+    default-server-middleware-pipeline-builder:
+      append:
+        - cors-middleware     # Access-Control-Allow-Origin * for easier development
+        - json-middleware
+
+    logging:
+      fs-task-processor: fs-task-processor
+      loggers:
+        default:
+          file_path: "@stderr"
+          level: $logger-level
+          overflow_behavior: discard # Drop logs if the system is too busy to write them down.
+
+    # Dynamic config options. Cache is disabled, updates are disabled.
+    dynamic-config:
+      # For most of userver dynamic configs, defaults are used, some are overridden here.
+      # See userver "dynamic config" docs for what configs exist.
+      defaults:
+        HTTP_CLIENT_CONNECTION_POOL_SIZE: 1000
+        POSTGRES_DEFAULT_COMMAND_CONTROL:
+          network_timeout_ms: 750
+          statement_timeout_ms: 500
+    
+    handler-server-monitor:
+      path: /service/monitor
+      method: GET
+      task_processor: main-task-processor
+      format: prometheus
+
+    testsuite-support: {}
+
+    http-client:
+      load-enabled: true
+      fs-task-processor: fs-task-processor
+
+    tests-control:
+      load-enabled: $is-testing
+      path: /tests/{action}
+      method: POST
+      task_processor: main-task-processor
+    handler-ping:
+      path: /ping
+      load-enabled: false
+      method: GET
+      task_processor: main-task-processor
+      throttling_enabled: false
+      url_trailing_slash: strict-match
+
+    # handler for options method
+    handler-v1-options:
+      as_fallback: implicit-http-options
+      method: OPTIONS
+      task_processor: main-task-processor
+      throttling_enabled: false
+
+    handler-login-user:
+      path: /api/v1/admin/login
+      method: POST
+      task_processor: main-task-processor
+    handler-logout-user:
+      path: /api/v1/admin/login
+      method: DELETE
+      task_processor: main-task-processor
+
+    handler-v1-get-cities:                    
+      path: /client/v1/cities               
+      method: GET                  
+      task_processor: main-task-processor 
+    
+    handler-v1-get-quest:                    
+      path: /client/v1/quest/{id}               
+      method: GET                  
+      task_processor: main-task-processor 
+    
+    handler-v1-post-quest:                    
+      path: /client/v1/quest               
+      method: POST                  
+      task_processor: main-task-processor 
+    
+    handler-v1-get-roles:                    
+      path: /api/v1/admin/user-get-roles        
+      method: GET                  
+      task_processor: main-task-processor 
+    
+    handler-v1-get-statuses:
+      path: /api/v1/admin/user-get-statuses
+      method: GET                  
+      task_processor: main-task-processor 
+
+    handler-v1-get-characters:
+      path: /api/v1/admin/characters
+      method: GET
+      task_processor: main-task-processor
+    handler-v1-add-character:
+      path: /api/v1/admin/characters
+      method: POST
+      task_processor: main-task-processor
+    handler-v1-get-character:
+      path: /api/v1/admin/characters/{id}
+      method: GET
+      task_processor: main-task-processor
+    handler-v1-delete-character:
+      path: /api/v1/admin/characters/{id}
+      method: DELETE
+      task_processor: main-task-processor
+    handler-v1-update-character:
+      path: /api/v1/admin/characters/{id}
+      method: PATCH
+      task_processor: main-task-processor   
+
+    handler-v1-get-admin-quests:
+      path: /api/v1/admin/quests
+      method: GET
+      task_processor: main-task-processor
+    handler-v1-add-admin-quest:
+      path: /api/v1/admin/quests
+      method: POST
+      task_processor: main-task-processor
+    handler-v1-get-admin-quest:
+      path: /api/v1/admin/quests/{id}
+      method: GET
+      task_processor: main-task-processor
+    handler-v1-update-admin-quest:
+      path: /api/v1/admin/quests/{id}
+      method: PATCH
+      task_processor: main-task-processor
+
+    handler-v1-get-managers:
+      path: /api/v1/admin/managers
+      method: GET
+      task_processor: main-task-processor
+    handler-v1-add-manager:
+      path: /api/v1/admin/managers
+      method: POST
+      task_processor: main-task-processor
+    handler-v1-get-manager:
+      path: /api/v1/admin/managers/{id}
+      method: GET
+      task_processor: main-task-processor
+    handler-v1-update-manager:
+      path: /api/v1/admin/managers/{id}
+      method: PATCH
+      task_processor: main-task-processor    
+    handler-v1-get-reset-password:
+      path: /api/v1/admin/reset-password/{login}
+      method: GET
+      task_processor: main-task-processor   
+    handler-v1-patch-reset-password:
+      path: /api/v1/admin/reset-password
+      method: PATCH
+      task_processor: main-task-processor
+    handler-v1-update-password:
+      path: /api/v1/admin/update-password
+      method: PATCH
+      task_processor: main-task-processor
+    handler-v1-get-user-info:
+      path: /api/v1/admin/user-info
+      method: GET
+      task_processor: main-task-processor
+    handler-v1-change-user-info:
+      path: /api/v1/admin/user-info
+      method: PATCH
+      task_processor: main-task-processor
+    handler-v1-upload-file:
+      path: /api/v1/admin/upload-file
+      method: POST
+      task_processor: main-task-processor
+    handler-v1-put-is-redirected:
+      path: /client/v1/analytics/is-redirected
+      method: PUT
+      task_processor: main-task-processor
+
+    postgres-db-1:
+      dbconnection: $dbconnection
+      dbconnection#env: DB_CONNECTION
+      blocking_task_processor: fs-task-processor
+      dns_resolver: async
+      sync-start: false
+      connlimit_mode: manual
+
+    dns-client:
+      fs-task-processor: fs-task-processor

@@ -1,0 +1,73 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node modules
+node_modules
+
+# Build directories
+dist
+dist-ssr
+
+# Local environment files
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Frontend specific ignores
+frontend/logs
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
+
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+frontend/*.local
+
+# Ignoring files and directories in admin and client
+frontend/admin/logs
+frontend/admin/*.log
+frontend/admin/npm-debug.log*
+frontend/admin/yarn-debug.log*
+frontend/admin/yarn-error.log*
+frontend/admin/pnpm-debug.log*
+frontend/admin/lerna-debug.log*
+
+frontend/admin/node_modules
+frontend/admin/dist
+frontend/admin/dist-ssr
+frontend/admin/*.local
+
+frontend/client/logs
+frontend/client/*.log
+frontend/client/npm-debug.log*
+frontend/client/yarn-debug.log*
+frontend/client/yarn-error.log*
+frontend/client/pnpm-debug.log*
+frontend/client/lerna-debug.log*
+
+frontend/client/node_modules
+frontend/client/dist
+frontend/client/dist-ssr
+frontend/client/*.local
+backend/.devcontainer/devcontainer.json
+backend/.devcontainer/docker-compose.yml
+backend/.github/dependabot.yml

@@ -1,0 +1,27 @@
+.head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-spacing-03, 0.5rem);
+  align-self: stretch;
+}
+
+.title {
+  flex: 1 0 0;
+  font-size: 1.1815rem;
+  font-weight: 500;
+}
+
+.faderScroll {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1.3125rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.faderScroll::-webkit-scrollbar {
+  display: none;
+}

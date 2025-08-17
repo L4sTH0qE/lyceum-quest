@@ -1,0 +1,185 @@
+/* Основной контейнер задачи */
+.taskContainer {
+  width: 100%;
+  position: relative;
+  border-radius: 16px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.staticText {
+  color: #b1b1b1;
+}
+
+/* Структура внутри задания */
+.frameParent {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+/* Внешний контейнер для "Номер", занимает 2/10 */
+.frameWrapper {
+  flex-basis: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+/* Внешний контейнер для контента (например, загрузки файлов или текстовых полей), занимает 6/10 */
+.fieldGroup {
+  flex-basis: 70%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  text-align: left;
+}
+
+/* Внешний контейнер для "Следующий шаг", занимает 2/10 */
+.frameDiv {
+  flex-basis: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+/* Лейблы для полей */
+.label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #1d1d1d;
+}
+
+/* Поля ввода без границ */
+.input {
+  font-size: 0.875rem;
+  color: #1d1d1d;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  width: 100%;
+}
+
+/* Сепараторы между блоками */
+.frameWrapper::after,
+.fieldGroup::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #87a0af;
+}
+
+/* Позиция сепараторов */
+.frameWrapper::after {
+  right: -0.75rem;
+}
+
+.fieldGroup::after {
+  right: -0.75rem;
+}
+
+/* Вертикальный текст */
+.verticalText {
+  position: absolute;
+  bottom: 25%;
+  left: -1.5rem;
+  color: #828282;
+  text-align: center;
+  transform: rotate(-90deg);
+  transform-origin: 0 0;
+}
+
+/* Контейнер для иконки */
+.iconWrapper {
+  position: relative;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.iconDeleteAttachment {
+  position: absolute;
+  top: 25%;
+  right: 20%;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Иконка и ее контейнер */
+.iconBack {
+  position: relative;
+  border-radius: 8px;
+  background-color: #e9eaec;
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 0;
+  justify-content: center;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Контейнер для файлов (предпросмотр) */
+.filesContainer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Стили для элемента файла */
+.fileItem {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.filePreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #e9eaec;
+  border-radius: var(--Corner-Small, 0.5rem);
+}
+
+/* Скрытый инпут для загрузки файлов */
+.fileInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e9eaec;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.fileInput {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}

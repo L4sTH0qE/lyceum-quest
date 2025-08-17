@@ -1,0 +1,50 @@
+.head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-spacing-03, 0.5rem);
+  align-self: stretch;
+}
+
+.title {
+  flex: 1 0 0;
+  font-size: 1.1815rem;
+  font-weight: 500;
+  padding: 0.4rem 0;
+}
+
+.container {
+  display: grid;
+  gap: var(--gap-spacing-07, 1.5rem);
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  max-height: 400px;
+  align-items: center;
+  gap: 1.5rem;
+  overflow: hidden;
+}
+
+.tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-height: 400px;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.wideFrame {
+  overflow: hidden;
+  border: 0.1px solid;
+  background-color: var(--color-fill-primary, #fff);
+  border-radius: var(--radius-radius-04, 1.5rem);
+}
+
+.frame {
+  overflow: hidden;
+  border: 0.1px solid;
+  background-color: var(--color-fill-primary, #fff);
+  border-radius: var(--radius-radius-04, 1.5rem);
+}

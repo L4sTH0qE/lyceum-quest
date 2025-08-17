@@ -1,0 +1,128 @@
+stages:
+  - deploy
+  - update_git
+
+deploy:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "${YCR_TOKEN}" | docker login --username oauth --password-stdin cr.yandex || { echo "Docker login failed"; exit 1; }
+
+    - |
+      if [[ "${DEPLOY_TARGET}" == "all" || "${DEPLOY_TARGET}" == "frontend/admin" ]]; then
+        echo "Deploying frontend/admin..."
+        if ! docker manifest inspect cr.yandex/crpuo6a2ikk02e6gt8b7/app_admin:v${RELEASE_VERSION}_latest; then
+          echo "Image not found!" && exit 1;
+        fi
+        echo "Pulling the latest Docker image"
+        docker pull cr.yandex/crpuo6a2ikk02e6gt8b7/app_admin:v${RELEASE_VERSION}_latest || { echo "Docker pull failed"; exit 1; }
+        echo "Stopping and removing old container"
+        docker stop app_admin || true
+        docker rm app_admin || true
+        echo "Running the new Docker image"
+        docker run -d --name app_admin --network lyceum_network cr.yandex/crpuo6a2ikk02e6gt8b7/app_admin:v${RELEASE_VERSION}_latest || { echo "Docker run failed"; exit 1; }
+      fi
+
+    - |
+      if [[ "${DEPLOY_TARGET}" == "all" || "${DEPLOY_TARGET}" == "frontend/client" ]]; then
+        echo "Deploying frontend/client..."
+        if ! docker manifest inspect cr.yandex/crpuo6a2ikk02e6gt8b7/app_client:v${RELEASE_VERSION}_latest; then
+          echo "Image not found!" && exit 1;
+        fi
+        echo "Pulling the latest Docker image"
+        docker pull cr.yandex/crpuo6a2ikk02e6gt8b7/app_client:v${RELEASE_VERSION}_latest || { echo "Docker pull failed"; exit 1; }
+        echo "Stopping and removing old container"
+        docker stop app_client || true
+        docker rm app_client || true
+        echo "Running the new Docker image"
+        docker run -d --name app_client --network lyceum_network cr.yandex/crpuo6a2ikk02e6gt8b7/app_client:v${RELEASE_VERSION}_latest || { echo "Docker run failed"; exit 1; }
+      fi
+    - |
+      if [[ "${DEPLOY_TARGET}" == "all" || "${DEPLOY_TARGET}" == "backend" ]]; then
+        echo "Deploying backend..."
+        if ! docker manifest inspect cr.yandex/crpuo6a2ikk02e6gt8b7/app_backend:v${RELEASE_VERSION}_latest; then
+         echo "Image not found!" && exit 1;
+        fi
+        echo "Pulling the latest Docker image"
+        docker pull cr.yandex/crpuo6a2ikk02e6gt8b7/app_backend:v${RELEASE_VERSION}_latest || { echo "Docker pull failed"; exit 1; }
+        echo "Stopping and removing old container"
+        docker stop lyceum_quest-container || true
+        docker rm lyceum_quest-container || true
+        docker stop service-postgres || true
+        docker rm service-postgres || true
+        echo "Running the new Docker image"
+        docker run -d --name service-postgres -p 5432:5432 --network lyceum_network -e POSTGRES_DB=lyceum_quest_db_1 -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -v $(pwd)/postgresql/schemas:/docker-entrypoint-initdb.d -v $(pwd)/.pgdata:/var/lib/postgresql/data postgres:12 || { echo "Docker run for PostgreSQL failed"; exit 1; }
+        echo "Running the new Docker image"
+        docker run -d --name lyceum_quest-container --network lyceum_network -e POSTGRES_DB=lyceum_quest_db_1 -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e DB_CONNECTION="postgresql://user:password@service-postgres:5432/lyceum_quest_db_1" -p 8080:8080 -p 8093:8093 --platform linux/amd64 cr.yandex/crpuo6a2ikk02e6gt8b7/app_backend:v${RELEASE_VERSION}_latest || { echo "Docker run for lyceum_quest failed"; exit 1; }
+      fi
+    - |
+      if [[ "${DEPLOY_TARGET}" == "all" || "${DEPLOY_TARGET}" == "monitoring" ]]; then
+        docker stop lyceum-prometheus || true
+        docker rm lyceum-prometheus || true
+        docker stop lyceum-grafana || true
+        docker rm lyceum-grafana || true
+        echo "Running the new Docker image"
+        docker run -d --name lyceum-prometheus --network lyceum_network -v /var/monitoring/prometheus/prometheus_data:/prometheus -v /var/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml -v /var/monitoring/prometheus/web.yml:/etc/prometheus/web.yml -p 9090:9090 prom/prometheus:v2.53.1 --config.file=/etc/prometheus/prometheus.yml --web.config.file=/etc/prometheus/web.yml
+        docker run -d --name lyceum-grafana --network lyceum_network -e "GF_SECURITY_ADMIN_USER=admin" -e "GF_SECURITY_ADMIN_PASSWORD=kegxod-1zysxe-fItkuj" -e "GF_USERS_ALLOW_SIGN_UP=false" -v /var/monitoring/grafana:/var/lib/grafana -v /var/monitoring/grafana/provisioning/:/etc/grafana/provisioning/ -v /var/monitoring/grafana/grafana_data/:/etc/grafana/grafana_data/ -p 9091:3000 grafana/grafana:11.1.1
+      fi
+    - |
+      if [[ "${DEPLOY_TARGET}" == "all" || "${DEPLOY_TARGET}" == "nginx" ]]; then
+        echo "Deploying nginx..."
+        if ! docker manifest inspect cr.yandex/crpuo6a2ikk02e6gt8b7/nginx_unified_proxy:v${RELEASE_VERSION}_latest; then
+          echo "Image not found!" && exit 1;
+        fi
+        echo "Pulling the latest Docker image"
+        docker pull cr.yandex/crpuo6a2ikk02e6gt8b7/nginx_unified_proxy:v${RELEASE_VERSION}_latest || { echo "Docker pull failed"; exit 1; }
+        echo "Stopping and removing old container"
+        docker stop nginx_unified_proxy || true
+        docker rm nginx_unified_proxy || true
+        echo "Running the new Docker image"
+        docker run -d --name nginx_unified_proxy --network lyceum_network -v /var/ssl:/etc/nginx/ssl -p 80:80 -p 443:443 cr.yandex/crpuo6a2ikk02e6gt8b7/nginx_unified_proxy:v${RELEASE_VERSION}_latest || { echo "Docker run failed"; exit 1; }
+      fi
+
+    - export TZ='Europe/Moscow'
+    - CURRENT_DATE=$(date +"%d.%m.%Y %H:%M:%S")
+    - echo "CURRENT_DATE=${CURRENT_DATE}" > current_date.txt
+
+  environment:
+    name: production
+  only:
+    - main
+
+update_git:
+  stage: update_git
+  image: node:20.14.0
+  script:
+    - apt-get update && apt-get install -y jq curl git
+    - curl -sL https://gitlab.com/gitlab-org/cli/-/releases/v1.45.0/downloads/glab_1.45.0_Linux_x86_64.tar.gz | tar xz -C /usr/local/bin --strip-components=1
+
+    - /usr/local/bin/glab auth login --hostname summer-school-2024.gitlab.yandexcloud.net --token $GITLAB_TOKEN
+    - git config --global user.email "ph.kirilltsvetkov@yandex.ru"
+    - git config --global user.name "Kirill"
+    - git remote set-url origin git@summer-school-2024.gitlab.yandexcloud.net:summer-school-group/team-29.git
+    - git checkout main
+    - export TZ='Europe/Moscow'
+    - CURRENT_DATE=$(date +"%d.%m.%Y %H:%M:%S")
+    - echo "CURRENT_DATE=${CURRENT_DATE}" > current_date.txt
+    - echo "CURRENT_DATE=${CURRENT_DATE}" >> .env
+    - echo "**Release ${RELEASE_VERSION} deployed to production on ${CURRENT_DATE}**" > release_notes.md
+    - echo -e "\n**Дата выкатки::** ${CURRENT_DATE}" >> release_notes.md
+    - echo -e "\n**Автор выкатки:** ${GITLAB_USER_LOGIN}" >> release_notes.md
+    - echo -e "\n**Docker образ:** [Ссылка](http://cr.yandex/app_admin:v${RELEASE_VERSION}_latest)" >> release_notes.md
+
+    - echo "Fetching issue list with label release-v${RELEASE_VERSION}"
+    - issue_list=$(/usr/local/bin/glab issue list --label release-v${RELEASE_VERSION} --output json)
+    - echo "$issue_list"
+    - issue_number=$(echo "$issue_list" | jq -r '.[0].iid')
+    - echo "$issue_number"
+    - /usr/local/bin/glab issue note "$issue_number" --message "$(cat release_notes.md)"
+  dependencies:
+    - deploy
+  needs:
+    - deploy
+  environment:
+    name: production
+  only:
+    - main

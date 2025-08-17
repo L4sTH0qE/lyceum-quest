@@ -1,0 +1,366 @@
+/* Основной контейнер задачи */
+.taskContainer {
+  width: 100%;
+  position: relative;
+  border-radius: 16px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.staticText {
+  color: #b1b1b1;
+}
+
+/* Структура внутри задания */
+.frameParent {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch; /* Изменено на stretch, чтобы выровнять элементы */
+  justify-content: space-between; /* Пропорциональное распределение пространства */
+  gap: 1.5rem;
+  /* overflow: visible; */
+}
+
+/* Внешний контейнер для "Номер", занимает 2/10 */
+.frameWrapper {
+  flex-basis: 10%; /* Занимает 2/10 от ширины */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+/* Внешний контейнер для "Текст", занимает 6/10 */
+.fieldGroup {
+  flex-basis: 70%; /* Занимает 6/10 от ширины */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+  /* overflow: hidden; */
+}
+
+/* Внешний контейнер для "Следующий шаг", занимает 2/10 */
+.frameDiv {
+  flex-basis: 20%; /* Занимает 2/10 от ширины */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+/* Лейблы для полей */
+.label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #1d1d1d;
+}
+
+/* Поля ввода без границ */
+.input {
+  font-size: 0.875rem;
+  color: #1d1d1d;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  width: 100%;
+}
+
+/* Сепараторы между блоками */
+.frameWrapper::after,
+.fieldGroup::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #87a0af;
+}
+
+/* Позиция сепараторов */
+.frameWrapper::after {
+  right: -0.75rem; /* Сепаратор между "Номер" и "Текст" */
+}
+
+.fieldGroup::after {
+  right: -0.75rem; /* Сепаратор между "Текст" и "Следующий шаг" */
+}
+
+/* Вертикальный текст */
+.verticalText {
+  position: absolute;
+  bottom: 25%;
+  left: -1.5rem;
+  color: #828282;
+  text-align: center;
+  transform: rotate(-90deg);
+  transform-origin: 0 0;
+}
+
+/* Контейнер для иконки */
+.iconWrapper {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  aspect-ratio: 240 / 328;
+  max-width: 340px;
+  background-color: var(--color-fill-secondary);
+  margin-top: 0.5rem;
+  margin: 0 auto;
+}
+
+.cardImage {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-radius-02, 0.5rem) var(--radius-radius-02, 0.5rem)
+    var(--Corner-None, 0rem) var(--Corner-None, 0rem);
+  object-fit: cover;
+  aspect-ratio: 240 / 148;
+}
+
+.imageContainer {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 240 / 148;
+  width: 100%;
+  display: flex;
+  border-radius: var(--radius-radius-02, 0.5rem) var(--radius-radius-02, 0.5rem)
+    var(--Corner-None, 0rem) var(--Corner-None, 0rem);
+  background: var(--color-fill-color-fill-component-accent-primary, #e9eaec);
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.placeholderImage {
+  border-radius: var(--radius-radius-04, 1.5rem);
+  background: var(--color-fill-color-fill-primary, #fff);
+  box-shadow: 0px var(--effects-effect-01, 2px) var(--effects-effect-02, 4px)
+    0px rgba(0, 0, 0, 0.1);
+  padding: var(--gap-spacing-04, 0.75rem);
+}
+
+.overlayIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  border-radius: var(--radius-radius-04, 1.5rem);
+  background: var(--color-fill-color-fill-primary, #fff);
+  box-shadow: 0px var(--effects-effect-01, 2px) var(--effects-effect-02, 4px)
+    0px rgba(0, 0, 0, 0.1);
+  padding: var(--gap-spacing-04, 0.75rem);
+}
+
+.cardContent {
+  gap: 0.7;
+  display: flex;
+  padding: var(--gap-spacing-07, 1.5rem) var(--gap-spacing-04, 0.75rem);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap-spacing-00, 0rem);
+
+  border-bottom: var(--borders-border-01, 1px) solid
+    var(--color-text-icons-color-txt-ic-light, #b1b1b1);
+}
+
+.cardTitle {
+  color: var(--color-text-icons-color-txt-ic-accent-add, #959595);
+
+  font-size: var(--font-size-md, 0.875rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--font-line-height-lineheight-headings-02, 1.25rem);
+  letter-spacing: var(--font-letter-spacing-letterspacing-headings, 0rem);
+}
+
+.cardDescription {
+  color: var(--color-text-icons-color-txt-ic-accent-add, #959595);
+  font-feature-settings: "liga" off, "clig" off;
+  /* Text/T4 */
+  font-family: var(--font-family-title, "Styrene B LC");
+  font-size: var(--font-size-sm, 0.75rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--font-line-height-lineheight-text, 1rem); /* 133.333% */
+  letter-spacing: var(--font-letter-spacing-letterspacing-headings, 0rem);
+}
+
+.cardActions {
+  position: relative;
+  display: flex;
+  width: 100%;
+  aspect-ratio: 240/60;
+  /* overflow: hidden; */
+  justify-content: space-between;
+  padding: var(--gap-spacing-07, 1.5rem) var(--gap-spacing-04, 0.75rem);
+}
+
+.cardButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cardButton:hover {
+  background-color: #0056b3;
+}
+
+.cardTitleInput {
+  border: none;
+  outline: none;
+  width: 100%;
+  background-color: transparent;
+  padding: 0;
+  color: var(--color-text-icons-color-txt-ic-secondary, #262628);
+  font-feature-settings: "case" on;
+
+  /* Text/T1 */
+  font-family: var(--font-family-body, "SF Pro Text");
+  font-size: var(--font-size-md, 0.875rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: var(--font-line-height-lineheight-text, 1rem); /* 114.286% */
+  letter-spacing: var(--font-letter-spacing-letterspacing-text, -0.025rem);
+}
+
+.cardDescriptionInput {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 0;
+  background-color: transparent;
+  resize: none;
+  height: auto;
+
+  color: var(--color-text-icons-color-txt-ic-secondary, #262628);
+  font-feature-settings: "case" on;
+
+  /* Text/T2 */
+  font-family: var(--font-family-body, "SF Pro Text");
+  font-size: var(--font-size-md, 0.875rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(
+    --font-line-height-lineheight-headings-01,
+    1.375rem
+  ); /* 157.143% */
+  letter-spacing: var(--font-letter-spacing-letterspacing-text, -0.025rem);
+}
+
+.fileInputWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e9eaec;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 140px;
+  width: 100%;
+  position: relative;
+}
+
+.fileInput {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 99;
+}
+
+.inputTextInButton {
+  width: 100%;
+  display: flex;
+  padding: var(--gap-spacing-03, 0.5rem) var(--gap-spacing-05, 1rem);
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: var(--radius-radius-02, 0.5rem);
+  background: var(--color-fill-color-fill-accent-secondary, #2c4942);
+  color: white;
+}
+
+.inputTextInButton::placeholder {
+  opacity: 0.6;
+  color: var(--color-text-icons-color-txt-ic-secondary, #fff);
+  font-family: var(--font-family-title, "Styrene B LC");
+  font-size: var(--font-size-xl, 1rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--font-line-height-lineheight-headings-01, 1.375rem);
+  letter-spacing: -0.0625rem;
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed #e9eaec;
+  position: relative;
+}
+
+.separatorWrapper {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  padding: var(--gap-spacing-05, 1rem) 0rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonsActions {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.buttonsActionsWrapper {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.imageWrapper {
+  align-self: center;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

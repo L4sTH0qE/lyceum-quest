@@ -1,0 +1,271 @@
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("/fonts/SFProText-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("/fonts/SFProText-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url("/fonts/SFProText-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Styrene B LC";
+  src: url("/fonts/Styrene B-Regular-Web.eot");
+  src: url("/fonts/Styrene B-Regular-Web?#iefix") format("embedded-opentype"),
+    url("/fonts/Styrene B-Regular-Web.woff2") format("woff2"),
+    url("/fonts/Styrene B-Regular-Web.woff") format("woff"),
+    url("/fonts/Styrene B-Regular-Web.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Styrene B LC";
+  src: url("/fonts/Styrene B-Medium-Web.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: var(--color-fill-color-fill-secondary, #f4f4f4);
+  margin: 0;
+  font-family: var(--font-family-title);
+}
+
+a {
+  line-height: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+:root {
+  --color-notice: hsl(235deg 100% 50%);
+  --color-warning: hsl(35deg 100% 46%);
+  --color-success: hsl(120deg 80% 35%);
+  --color-error: hsl(345deg 100% 50%);
+
+  /* families */
+  --font-family-title: "Styrene B LC", sans-serif;
+  --font-family-body: "SF Pro Text", sans-serif;
+
+  /* text & icons */
+  --color-txt-ic-primary: var(--gray);
+  --color-txt-ic-secondary: var(--neutral-700);
+  --color-txt-ic-tertiary: var(--neutral-0);
+  --color-txt-ic-accent-primary: var(--green);
+  --color-txt-ic-accent-secondary: var(--dark-green);
+  --color-txt-ic-accent-tertiary: var(--light-blue-01);
+  --color-txt-ic-accent-add: var(--neutral-600);
+  --color-txt-ic-warning: var(--orange);
+  --color-txt-ic-danger: var(--red);
+  --color-txt-ic-info: var(--blue);
+  --color-txt-ic-light: var(--neutral-500);
+
+  /* background */
+  --color-fill-primary: var(--neutral-0);
+  --color-fill-secondary: var(--neutral-100);
+  --color-fill-tertiary: var(--neutral-700);
+  --color-fill-accent-primary: var(--green);
+  --color-fill-accent-secondary: var(--dark-green);
+  --color-fill-component-accent-primary: var(--neutral-200);
+  --color-fill-component-accent-secondary: var(--light-blue-01);
+  --color-fill-warning: var(--light-orange);
+  --color-fill-danger: var(--light-red);
+  --color-fill-success: var(--light-green);
+
+  /*  separators */
+  --color-border-primary: var(--neutral-300);
+  --color-border-secondary: var(--gray);
+  --color-border-tertiary: var(--neutral-700);
+  --color-border-component-accent: var(--green);
+  --color-border-focus: var(--light-blue-02);
+  --color-border-danger: var(--red);
+
+  /* radius */
+  --radius-00: 0.125rem;
+  --radius-01: 0.25rem;
+  --radius-02: 0.5rem;
+  --radius-03: 1rem;
+  --radius-04: 1.5rem;
+  --radius-05: 6.25rem;
+
+  /* borders */
+  --border-01: 0.063rem;
+  --border-02: 0.188rem;
+  --border-03: 0.25rem;
+
+  /* effects */
+  --effect-01: 0.125rem;
+  --effect-02: 0.25rem;
+  --effect-03: 2rem;
+  --effect-04: 4rem;
+
+  /* spacing */
+  --spacing-00: 0rem;
+  --spacing-01: 0.25rem;
+  --spacing-02: 0.375rem;
+  --spacing-03: 0.5rem;
+  --spacing-04: 0.75rem;
+  --spacing-05: 1rem;
+  --spacing-06: 1.25rem;
+  --spacing-07: 1.5rem;
+  --spacing-08: 2rem;
+  --spacing-09: 2.625rem;
+  --spacing-10: 3.375rem;
+  --spacing-11: 7.5rem;
+  --spacing-12: 15rem;
+
+  /* opacity */
+  --opacity-01: 3.125rem;
+  --opacity-02: 4.688rem;
+
+  /* letter spacing */
+  --letterspacing-primary: 0rem;
+  --lineheight-headings-01: 1.375rem;
+  --xs: 0.625rem;
+  --sm: 0.75rem;
+  --lineheight-headings-02: 1.25rem;
+  --letterspacing-text: -0.025rem;
+  --lineheight-text: 1rem;
+  --md: 0.875rem;
+  --lg: 0.938rem;
+  --xl: 1rem;
+  --var-2xl: 1.125rem;
+  --var-3xl: 1.25rem;
+
+  --h1: 1.125rem;
+  --h2: 0.938rem;
+  --h3: 0.875rem;
+  --h4: 0.875rem;
+  --h5: 0.75rem;
+  --t1: 0.875rem;
+  --t2: 0.875rem;
+  --t3: 0.875rem;
+  --t4: 0.75rem;
+  --t5: 0.75rem;
+  --t6: 0.625rem;
+  --b1: 1.125rem;
+  --b2: 1rem;
+  --b3: 1rem;
+  --b4: 0.875rem;
+
+  /* palette */
+  --neutral-0: #ffffff;
+  --neutral-100: #f4f4f4;
+  --neutral-200: #e9eaec;
+  --neutral-300: #e5e5e5;
+  --neutral-400: #d5dce0;
+  --neutral-500: #b1b1b1;
+  --neutral-600: #959595;
+  --neutral-700: #262628;
+  --green: #00da72;
+  --light-green: #ecffec;
+  --dark-green: #2c4942;
+  --red: #ff1c00;
+  --light-red: #feebef;
+  --orange: #f58d0a;
+  --light-orange: #fff5e1;
+  --blue: #121aff;
+  --light-blue-01: #e9f4fa;
+  --light-blue-02: #cee2eb;
+  --gray: #87a0af;
+
+  h1 {
+    font-size: var(--h1);
+    line-height: 1.222222;
+    font-weight: 500;
+  }
+  h2 {
+    font-size: var(--h2);
+    line-height: 1.333333;
+    font-weight: 400;
+  }
+  h3 {
+    font-size: var(--h3);
+    line-height: 1.428571;
+    font-weight: 500;
+  }
+  h4 {
+    font-size: var(--h4);
+    line-height: 1.428571;
+    font-weight: 400;
+  }
+  h5 {
+    font-size: var(--h5);
+    line-height: 1.666667;
+    font-weight: 400;
+  }
+  t1 {
+    font-size: var(--t1);
+    line-height: 1.142857;
+    font-weight: 500;
+  }
+  t2 {
+    font-size: var(--t2);
+    line-height: 1.571429;
+    font-weight: 400;
+  }
+  t3 {
+    font-size: var(--t3);
+    line-height: 1.428571;
+    font-weight: 500;
+  }
+  t4 {
+    font-size: var(--t4);
+    line-height: 1.333333;
+    font-weight: 400;
+  }
+  t5 {
+    font-size: var(--t5);
+    line-height: 1.333333;
+    font-weight: 400;
+  }
+  t6 {
+    font-size: var(--t6);
+    line-height: 2;
+    font-weight: 400;
+  }
+  b1 {
+    font-size: var(--b1);
+    line-height: 1.222222;
+    font-weight: 500;
+  }
+  b2 {
+    font-size: var(--b2);
+    line-height: 1.25;
+    font-weight: 500;
+  }
+  b3 {
+    font-size: var(--b3);
+    line-height: 1.375;
+    font-weight: 400;
+  }
+  b4 {
+    font-size: var(--b4);
+    line-height: 1.428571;
+    font-weight: 500;
+  }
+}

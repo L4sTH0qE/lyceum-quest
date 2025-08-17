@@ -1,0 +1,72 @@
+.file_icon {
+    position: relative;
+    display: block;
+    width: 40px;
+    height: 52px;
+    background-image: url('../file-icon.svg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.extension {
+    color: #00da72;
+    position: absolute;
+    font-size: 16px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+.download {
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 18px;
+    height: 18px;
+    background-image: url('../download-icon.svg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: all 0.3s ease;
+}
+.wrapper {
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    transition: opacity 0.3s ease-in-out;
+}
+.wrapper:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.wrapper:hover .download {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+.wrapper:hover .extension {
+    font-size: 14px;
+    top: 80%;
+}
+.inner_wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.file_name {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: -0.5px;
+    text-align: left;
+}
+.file_type {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: -0.40799999237060547px;
+    text-align: left;
+}

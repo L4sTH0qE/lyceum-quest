@@ -1,0 +1,101 @@
+.select {
+  width: 100%;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  position: relative;
+}
+
+.lableRequired {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.lable {
+  position: relative;
+  font-family: var(--font-family-sf);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-small);
+}
+
+.input {
+  align-self: stretch;
+  padding: var(--gap-spacing-01, 0.25rem);
+  border-radius: var(--radius-radius-02, 0.5rem);
+  border: var(--borders-border-01, 1px) solid
+    var(--color-borders-color-border-primary, #e5e5e5);
+  background: var(--color-fill-color-fill-primary, #fff);
+  box-shadow: 0px var(--effects-effect-03, 32px) var(--effects-effect-04, 64px)
+    0px rgba(33, 44, 58, 0.16);
+
+  box-sizing: border-box;
+  height: 2.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-8px);
+  color: var(--color-darkgray);
+  cursor: pointer;
+}
+
+.inputActive {
+  border-color: var(--color-orange);
+}
+
+.value {
+  flex: 1;
+  position: relative;
+  font-family: var(--font-family-sf);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-small);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.valueActive {
+  color: var(--color-gray);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: var(--gap-spacing-01, 0.25rem);
+  border-radius: var(--radius-radius-02, 0.5rem);
+  border: var(--borders-border-01, 1px) solid
+    var(--color-borders-color-border-primary, #e5e5e5);
+  background: var(--color-fill-color-fill-primary, #fff);
+  box-shadow: 0px var(--effects-effect-03, 32px) var(--effects-effect-04, 64px)
+    0px rgba(33, 44, 58, 0.16);
+  z-index: 10;
+  overflow: hidden;
+  margin-top: 0.25rem;
+}
+
+.dropdownContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 8px;
+}
+
+.dropdownItem {
+  padding: 12px;
+  cursor: pointer;
+  z-index: 999;
+}
+
+.dropdownItem:hover,
+.dropdownItem.selected {
+  background-color: var(--color-border-secondary);
+  border-radius: var(--radius-02);
+  transition: background-color 0.3s ease;
+}

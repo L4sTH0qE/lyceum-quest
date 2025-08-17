@@ -1,0 +1,7 @@
+.icon {
+  fill: var(--color-txt-ic-primary, #87a0af);
+}
+
+.activeIcon {
+  fill: var(--color-txt-ic-accent-primary, #00da72);
+}

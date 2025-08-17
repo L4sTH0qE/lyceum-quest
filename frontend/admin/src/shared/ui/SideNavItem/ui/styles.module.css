@@ -1,0 +1,39 @@
+.navigationItem {
+  display: flex;
+  padding: var(--gap-spacing-03, 0.5rem) var(--gap-spacing-07, 1.5rem);
+  align-items: center;
+  text-decoration: none;
+  list-style: none;
+  gap: var(--gap-spacing-03, 0.5rem);
+  border-left: var(--borders-border-02, 3px) solid transparent;
+}
+
+.navigationItem h3 {
+  flex: 1 0 0;
+  width: 100%;
+  font-family: var(--font-family-title, "Styrene B LC");
+  font-weight: 400;
+  font-style: normal;
+  color: var(--color-text-icons-color-txt-ic-primary, #87a0af);
+  line-height: var(--font-line-height-lineheight-headings-02, 1.25rem);
+  letter-spacing: var(--font-letter-spacing-letterspacing-headings, 0rem);
+}
+
+.navigationItem.active h3 {
+  color: var(--color-text-icons-color-txt-ic-secondary, #262628);
+}
+
+.navigationItem.active {
+  display: flex;
+  padding: var(--gap-spacing-03, 0.5rem) var(--gap-spacing-07, 1.5rem);
+  align-items: center;
+  gap: var(--gap-spacing-03, 0.5rem);
+  align-self: stretch;
+  border-left: var(--borders-border-02, 3px) solid
+    var(--color-borders-color-border-component-accent, #00da72);
+  background: var(--color-fill-color-fill-component-accent-secondary, #e9f4fa);
+}
+
+.navigationItem:hover {
+  background: var(--color-fill-color-fill-component-accent-secondary, #e9f4fa);
+}

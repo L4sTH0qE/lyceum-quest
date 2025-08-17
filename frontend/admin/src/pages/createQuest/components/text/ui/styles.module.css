@@ -1,0 +1,28 @@
+.label {
+  color: var(--color-txt-ic-light, #b1b1b1);
+
+  font-family: var(--font-family-title, "Styrene B LC");
+  font-size: var(--font-size-sm, 0.75rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--lineheight-headings-02, 1.25rem);
+  letter-spacing: var(--letterspacing-headings, 0rem);
+}
+
+.input {
+  font-size: 0.875rem;
+  color: #1d1d1d;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  width: 100%;
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 16px;
+  cursor: pointer;
+}

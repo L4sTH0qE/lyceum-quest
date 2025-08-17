@@ -1,0 +1,10 @@
+worker-threads: 4
+worker-fs-threads: 1
+monitor_worker_threads: 1
+logger-level: info
+
+is-testing: false
+
+server-port: 8080
+
+dbconnection: 'postgresql://lyceum_quest_user:password@localhost:5432/lyceum_quest_db_1'

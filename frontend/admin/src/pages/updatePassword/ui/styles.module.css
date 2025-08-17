@@ -1,0 +1,10 @@
+.form {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  justify-content: center;
+  gap: var(--gap-spacing-06, 1.25rem) var(--gap-spacing-07, 1.5rem);
+  flex-direction: column;
+  height: 100%;
+}

@@ -1,0 +1,145 @@
+Общие схемы:
+
+Character: {
+	character_id: uuid,
+	name: string,
+	avatar: string, (url)
+	full_size_picture: string (url)
+}
+
+TextMessage: {
+	message_id: uuid,
+	character: Character,
+	text: string
+}
+
+Attachment: {
+	attachment_id: uuid,
+	file_name: string,
+	file_type: string,
+	file_url: string,
+}
+
+AttachmentMessage: {
+	message_id: uuid,
+	character: Character,
+	attachments: [ Attachment, … ]
+}
+
+CityInputMessage: {
+	message_id: uuid,
+	character: Character
+}
+
+Button {
+	button_id: uuid,
+	text: string, (value показывается на самой кнопке)
+	placeholder: string, (то, что показывается в чате после выбора ответа),
+}
+
+KeyboardMessage: {
+	message_id: uuid,
+	keyboard: [
+		[Button, Button, …],
+		[Button, …],
+		…
+	],
+	character: Character
+}
+
+City: {
+	city_id: uuid,
+	name: string
+}
+
+
+Ручки для клиента:
+GET /client/v1/quest/{id} - ручка старта квеста
+Responses:
+200: {
+	quest_id,
+	session - потом,
+	messages: [
+		TextMessage|FileMessage|CityInputMessage|KeyboardMessage
+	]
+}
+
+POST /client/v1/quest/{id} - ручка продолжения квеста
+Body: {
+	quest_id: uuid,
+	message_id: uuid,
+	button_id: uuid, - optional
+	city_id - optional 
+}
+
+Responses:
+200: {
+	quest_id,
+	session - потом,
+	messages: [
+		TextMessage|FileMessage|CityInputMessage|KeyboardMessage
+	]
+}
+
+GET /client/v1/cities - ручка для получения городов
+Respones:
+200: [
+	City
+]
+
+Ручки для админки:
+
+POST /api/v1/admin_panel/login
+Body: {
+	login: string,
+	password: string
+}
+
+Responses:
+200: {
+	token: string
+}
+
+401: empty
+
+GET /api/v1/admin/characters
+Headers:
+	token: string
+Responses:
+200: {
+	[Character, ...]
+}
+
+
+POST /api/v1/admin/create_quest
+Headers:
+	token: string
+Body: {
+	# тут еще подумать надо
+	[
+		{
+			id: integer(string),
+			type: string,
+			keyboard(optional): [
+				{
+					text: string
+					placeholder: string
+				}
+			],
+			attachments(optional): [
+				{
+					file_name: string
+					file_url: string
+					file_type: string
+				}
+			],
+			text(optional): string,
+			next_id: integer(string),
+			character_id: string 
+		}
+	]
+}
+
+Respones:
+200,
+400 - какая-то ошибка в данных (неправильные ссылки, циклы)

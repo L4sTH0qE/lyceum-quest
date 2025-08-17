@@ -1,0 +1,145 @@
+stages:
+  - build
+  - create_release
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker builder prune --all --force
+    - echo "${YCR_TOKEN}" | docker login --username oauth --password-stdin cr.yandex
+  script:
+    - |
+      if [[ "${BUILD_TARGET}" == "all" || "${BUILD_TARGET}" == "frontend/admin" ]]; then
+        echo "Building frontend/admin..."
+        cd frontend/admin
+        docker build --no-cache . -t lyceum-cloud-admin:latest
+        docker tag lyceum-cloud-admin:latest cr.yandex/crpuo6a2ikk02e6gt8b7/app_admin:v${RELEASE_VERSION}
+        docker tag lyceum-cloud-admin:latest cr.yandex/crpuo6a2ikk02e6gt8b7/app_admin:v${RELEASE_VERSION}_latest
+        docker push cr.yandex/crpuo6a2ikk02e6gt8b7/app_admin:v${RELEASE_VERSION}
+        docker push cr.yandex/crpuo6a2ikk02e6gt8b7/app_admin:v${RELEASE_VERSION}_latest
+        cd -
+      fi
+    - |
+      if [[ "${BUILD_TARGET}" == "all" || "${BUILD_TARGET}" == "frontend/client" ]]; then
+        echo "Building frontend/client..."
+        cd frontend/client
+        docker build --no-cache . -t lyceum-cloud-client:latest
+        docker tag lyceum-cloud-client:latest cr.yandex/crpuo6a2ikk02e6gt8b7/app_client:v${RELEASE_VERSION}
+        docker tag lyceum-cloud-client:latest cr.yandex/crpuo6a2ikk02e6gt8b7/app_client:v${RELEASE_VERSION}_latest
+        docker push cr.yandex/crpuo6a2ikk02e6gt8b7/app_client:v${RELEASE_VERSION}
+        docker push cr.yandex/crpuo6a2ikk02e6gt8b7/app_client:v${RELEASE_VERSION}_latest
+        cd -
+      fi
+    - |
+      if [[ "${BUILD_TARGET}" == "all" || "${BUILD_TARGET}" == "nginx" ]]; then
+        echo "Building nginx..."
+        cd nginx
+        docker build . -t nginx_unified_proxy:latest
+        docker tag nginx_unified_proxy:latest cr.yandex/crpuo6a2ikk02e6gt8b7/nginx_unified_proxy:v${RELEASE_VERSION}
+        docker tag nginx_unified_proxy:latest cr.yandex/crpuo6a2ikk02e6gt8b7/nginx_unified_proxy:v${RELEASE_VERSION}_latest
+        docker push cr.yandex/crpuo6a2ikk02e6gt8b7/nginx_unified_proxy:v${RELEASE_VERSION}
+        docker push cr.yandex/crpuo6a2ikk02e6gt8b7/nginx_unified_proxy:v${RELEASE_VERSION}_latest
+        cd -
+      fi
+    - |
+      if [[ "${BUILD_TARGET}" == "all" || "${BUILD_TARGET}" == "backend" ]]; then
+        echo "Building backend..."
+        cd backend
+        docker build --no-cache --platform linux/amd64 -t lyceum_cloud_backend:latest .
+        docker tag lyceum_cloud_backend:latest cr.yandex/crpuo6a2ikk02e6gt8b7/app_backend:v${RELEASE_VERSION}
+        docker tag lyceum_cloud_backend:latest cr.yandex/crpuo6a2ikk02e6gt8b7/app_backend:v${RELEASE_VERSION}_latest
+        docker push cr.yandex/crpuo6a2ikk02e6gt8b7/app_backend:v${RELEASE_VERSION}
+        docker push cr.yandex/crpuo6a2ikk02e6gt8b7/app_backend:v${RELEASE_VERSION}_latest
+        cd -
+      fi
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+
+before_script:
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan summer-school-2024.gitlab.yandexcloud.net >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+
+create_release:
+  stage: create_release
+  image: node:20.14.0
+  script:
+    - apt-get update && apt-get install -y jq curl git
+    - curl -sL https://gitlab.com/gitlab-org/cli/-/releases/v1.45.0/downloads/glab_1.45.0_Linux_x86_64.tar.gz | tar xz -C /usr/local/bin --strip-components=1
+    - /usr/local/bin/glab --version
+    - /usr/local/bin/glab auth login --hostname summer-school-2024.gitlab.yandexcloud.net --token $GITLAB_TOKEN
+    - git config --global user.email "ph.kirilltsvetkov@yandex.ru"
+    - git config --global user.name "Kirill"
+    - git remote set-url origin git@summer-school-2024.gitlab.yandexcloud.net:summer-school-group/team-29.git
+    
+    # Удаление всех локальных тегов
+    - git tag -l | xargs git tag -d
+    
+    # Удаление всех удаленных тегов
+    - git ls-remote --tags --refs origin | cut -f2 | xargs -I {} git push origin :refs/tags/{}
+    
+    # Обновление всех локальных тегов и удаление их из всех удаленных веток
+    - git fetch --prune origin '+refs/tags/*:refs/tags/*'
+    - git tag -l | xargs -I {} git push origin :refs/tags/{}
+    
+    - git checkout -b releases/v${RELEASE_VERSION}
+    - git push origin releases/v${RELEASE_VERSION}
+    
+    # Проверка наличия тегов и создание списка коммитов
+    - |
+      if [ $(git tag | wc -l) -eq 0 ]; then
+        git tag -a v${RELEASE_VERSION} -m "Release v${RELEASE_VERSION}"
+        git push origin --tags
+        git log --pretty=format:"- %s" > temp_CHANGELOG.md
+      else
+        git tag -a v${RELEASE_VERSION} -m "Release v${RELEASE_VERSION}"
+        git push origin --tags
+        latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "initial")
+        previous_tag=$(git describe --tags --abbrev=0 --exclude=${latest_tag})
+        echo "$latest_tag"
+        echo "$previous_tag"
+        git log ${previous_tag}..${latest_tag} --pretty=format:"- %s" > temp_CHANGELOG.md
+        cat temp_CHANGELOG.md
+      fi
+    
+    - export TZ='Europe/Moscow'
+    - CURRENT_DATE=$(date +"%d.%m.%Y %H:%M:%S")
+    - echo "CURRENT_DATE=${CURRENT_DATE}" > current_date.txt
+    - echo "CURRENT_DATE=${CURRENT_DATE}" >> .env
+    - echo "**Release created on ${CURRENT_DATE}**" > release_notes.md
+    - echo -e "\n**Дата:** ${CURRENT_DATE}" >> release_notes.md
+    - echo -e "\n**Автор релиза:** ${GITLAB_USER_LOGIN}" >> release_notes.md
+    - echo -e "\n**Номер версии:** v${RELEASE_VERSION}" >> release_notes.md
+    - echo -e "\n**Docker образ:** [Ссылка](http://cr.yandex/app_admin:v${RELEASE_VERSION}_latest)" >> release_notes.md
+    
+    - echo "## Release ${RELEASE_VERSION} - ${CURRENT_DATE}" > new_release_notes.md
+    - echo >> new_release_notes.md
+    - cat temp_CHANGELOG.md >> new_release_notes.md
+    - echo >> new_release_notes.md
+    - if [ -f CHANGELOG.md ]; then cat CHANGELOG.md >> new_release_notes.md; fi
+    - mv new_release_notes.md CHANGELOG.md
+    - cat CHANGELOG.md
+    - git add CHANGELOG.md
+    - git commit -m "Update CHANGELOG for release v${RELEASE_VERSION}"
+    - git checkout main
+    - git merge releases/v${RELEASE_VERSION}
+    - git push origin main --force
+    - /usr/local/bin/glab label create --name "release-v${RELEASE_VERSION}" --color "#0E8A16" || echo "Label already exists"
+    - /usr/local/bin/glab issue create --title "Release v${RELEASE_VERSION}" --description "$(cat release_notes.md)" --label "release,release-v${RELEASE_VERSION}"
+
+    - /usr/local/bin/glab release create v${RELEASE_VERSION} --name "Release v${RELEASE_VERSION}" --notes "$(cat release_notes.md)"
+  artifacts:
+    paths:
+      - release_notes.md
+      - CHANGELOG.md
+      - current_date.txt
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+  needs: [build]

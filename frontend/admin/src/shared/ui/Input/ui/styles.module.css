@@ -1,0 +1,77 @@
+.inputParent {
+  position: relative;
+  width: 100%;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.inputContainer {
+  gap: 1rem;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  gap: 1rem;
+  box-sizing: border-box;
+  flex: 1;
+  border-radius: var(--br-8px, 8px);
+  background-color: var(--color-white, #fff);
+  border: 1px solid var(--color-extralight-gray, #dfeaf2);
+  padding: 12px;
+  color: var(--color-gray, #616161);
+  font-size: var(--font-size-base, 1rem);
+  font-family: var(--font-family-sb);
+  font-weight: var(--font-weight-regular, 400);
+  outline: none;
+  transition: border-color 0.3s ease; /* Плавный переход границы */
+}
+
+/* Стиль при наведении */
+.input:hover {
+  border-color: var(--color-light-gray, #b0b0b0);
+}
+
+/* Стиль при фокусе */
+.input:focus {
+  border-color: var(--color-orange, #ff9800);
+}
+
+/* Стиль для ошибки */
+.error {
+  border-color: var(--color-pink, #ff4081);
+}
+
+.input.error:focus {
+  border-color: var(--color-pink, #ff4081);
+}
+
+/* Стили для disabled */
+.input:disabled {
+  background-color: var(
+    --color-light-gray,
+    #f5f5f5
+  ); /* Бледный цвет фона для disabled */
+  border-color: var(
+    --color-extralight-gray,
+    #dfeaf2
+  ); /* Светлый цвет границы для disabled */
+  color: var(--color-gray-light, #b0b0b0); /* Более бледный цвет текста */
+  cursor: not-allowed; /* Указатель недоступности */
+}
+
+/* Стиль для label */
+.label {
+  width: 100%;
+  font-family: var(--font-family-sb);
+  font-weight: var(--font-weight-regular, 400);
+  color: var(--color-gray, #616161);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

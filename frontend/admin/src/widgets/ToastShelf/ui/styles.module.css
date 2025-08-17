@@ -1,0 +1,37 @@
+@keyframes toast {
+  from {
+    transform: translateX(calc(100% + 64px));
+  }
+}
+
+.wrapper {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  list-style-type: none;
+  z-index: 9999;
+}
+
+.toastWrapper {
+  animation: toast 800ms cubic-bezier(0, 0.46, 0, 1.04) both;
+  will-change: transform;
+}
+
+.text {
+  color: var(--color-text-icons-color-txt-ic-secondary, #262628);
+
+  /* Heading/H4 */
+  font-family: var(--font-family-title, "Styrene B LC");
+  font-size: var(--font-size-md, 0.875rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(
+    --font-line-height-lineheight-headings-02,
+    1.25rem
+  ); /* 142.857% */
+  letter-spacing: var(--font-letter-spacing-letterspacing-headings, 0rem);
+}

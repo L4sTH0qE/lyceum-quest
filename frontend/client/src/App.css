@@ -1,0 +1,8 @@
+#root {
+    /* background-image: url('../chat-bg-green-150.webp'); */
+    background-image: url('../chat-bg-grey-300.webp');
+    background-position: center;
+    background-size: 300px;
+    width: 100%;
+    margin: 0 auto;
+}

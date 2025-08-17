@@ -1,0 +1,259 @@
+/* Основной контейнер задачи */
+.taskContainer {
+  /* flex-direction: column; */
+
+  width: 100%;
+  position: relative;
+  border-radius: 16px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.staticText {
+  color: #b1b1b1;
+}
+
+/* Структура внутри задания */
+.frameParent {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch; /* Изменено на stretch, чтобы выровнять элементы */
+  justify-content: space-between; /* Пропорциональное распределение пространства */
+  gap: 1.5rem;
+}
+
+/* Внешний контейнер для "Номер", занимает 2/10 */
+.frameWrapper {
+  flex-basis: 10%; /* Занимает 2/10 от ширины */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+}
+
+/* Внешний контейнер для "Текст", занимает 6/10 */
+.fieldGroup {
+  flex-basis: 70%; /* Занимает 6/10 от ширины */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  text-align: left;
+}
+
+/* Внешний контейнер для двух текстовых инпутов */
+.fieldGroup {
+  flex-basis: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  gap: var(--sds-size-space-600);
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+/* Внешний контейнер для двух текстовых инпутов */
+.fieldGroupRow {
+  flex-basis: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  gap: 1rem;
+}
+/* Внутренний контейнер для каждого инпута */
+.fieldGroupInner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.fieldGroupInner::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #87a0af;
+}
+
+/* Внешний контейнер для "Следующий шаг", занимает 2/10 */
+.frameDiv {
+  flex-basis: 20%; /* Занимает 2/10 от ширины */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+  justify-content: flex-start;
+  gap: var(--sds-size-space-600);
+}
+
+.fieldWrapper {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+}
+
+.frameDivTrash {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: left;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+
+.fieldWrapperTrash {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Лейблы для полей */
+.label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #1d1d1d;
+}
+
+/* Поля ввода без границ */
+.input {
+  border: none;
+  outline: none;
+  width: 100%;
+  background-color: transparent;
+  padding: 0;
+  color: var(--color-text-icons-color-txt-ic-secondary, #262628);
+  font-feature-settings: "case" on;
+
+  /* Text/T1 */
+  font-family: var(--font-family-body, "SF Pro Text");
+  font-size: var(--font-size-md, 0.875rem);
+  font-style: normal;
+  font-weight: 500;
+  line-height: var(--font-line-height-lineheight-text, 1rem); /* 114.286% */
+  letter-spacing: var(--font-letter-spacing-letterspacing-text, -0.025rem);
+}
+
+.inputTextInButton {
+  width: 100%;
+  display: flex;
+  padding: var(--gap-spacing-03, 0.5rem) var(--gap-spacing-05, 1rem);
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: var(--radius-radius-02, 0.5rem);
+  background: var(--color-fill-color-fill-accent-secondary, #2c4942);
+  color: white;
+}
+
+.inputTextInButton::placeholder {
+  opacity: 0.6;
+  color: var(--color-text-icons-color-txt-ic-secondary, #fff);
+  font-family: var(--font-family-title, "Styrene B LC");
+  font-size: var(--font-size-xl, 1rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--font-line-height-lineheight-headings-01, 1.375rem);
+  letter-spacing: -0.0625rem;
+}
+
+/* Сепараторы между блоками */
+.frameWrapper::after,
+.fieldGroup::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #87a0af;
+}
+
+/* Позиция сепараторов */
+.frameWrapper::after {
+  right: -0.75rem; /* Сепаратор между "Номер" и "Текст" */
+}
+
+.fieldGroup::after {
+  right: -0.75rem; /* Сепаратор между "Текст" и "Следующий шаг" */
+}
+
+/* Вертикальный текст */
+.verticalText {
+  position: absolute;
+  /* top: 10%; */
+  bottom: 25%;
+  left: -1.5rem;
+  color: #828282;
+  text-align: center;
+  transform: rotate(-90deg);
+  transform-origin: 0 0;
+}
+
+/* Контейнер для иконки */
+.iconWrapper {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Сепаратор между строками полей */
+.separator {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed #e9eaec;
+}
+
+/* Обертка для сепаратора и кнопки */
+.separatorWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  position: relative;
+}
+
+/* Кнопка для добавления новых полей */
+.addButton {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e9eaec;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.addButton span {
+  font-size: 18px;
+  line-height: 1;
+  color: #333;
+}
+
+.imageWrapper {
+  align-self: center;
+}
